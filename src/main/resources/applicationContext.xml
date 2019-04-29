@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/context       
+       					   http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd" >
+	
+
+	<bean id="userServiceId" class="com.huangpan.serviceImlp.UserServiceImpl"></bean>
+	
+	<bean id="myAdvice" class="com.huangpan.MyAdvice"></bean>
+	
+	<!--
+		这里是使用aop联盟的配置方法，如果这里使用了aspectj，还继续使用这种配置的话，会报错，因为在aop联盟配置方法里面，myAdvice对应的类
+		需要实现aop联盟接口，但是这里使用aspectj配置的话，这个类就没有实现aop联盟接口，所以这里会报错。
+	 	<aop:config>
+			<aop:pointcut expression="execution(* com.huangpan.serviceImlp.*.*(..))" id="pointC"/>
+			<aop:advisor advice-ref="myAdvice" pointcut-ref="pointC"/>
+		</aop:config>
+	 -->
+ 	
+ 	<!-- 下面是使用aspectj的配置 -->
+ 	<aop:config >
+ 		<aop:pointcut expression="execution(* com.huangpan.serviceImlp.*.*(..))" id="myPointCut"/>
+ 		<aop:aspect ref="myAdvice">
+ 			<aop:around method="myaround" pointcut-ref="myPointCut"/>
+ 		</aop:aspect>
+ 	</aop:config>
+	
+	
+	
+	
+</beans>
